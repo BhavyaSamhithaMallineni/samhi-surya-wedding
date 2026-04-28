@@ -639,7 +639,7 @@ async function submitRSVP(e) {
   const data = new FormData(form);
   const events = [...form.querySelectorAll('input[name=events]:checked')].map(c => c.value).join(', ');
 
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzxa35BAVAmTT9Xs7cOKvnKfE70SIbDcwB2KKeYrJm-S7p7u-_wRdhaNOcbdYFp2FQ/exec';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwbdsuDBFuf5BZ2cuRUzQ4lqiaDAHWG69ILtndJUoh8RELccMA03XncPHODaze5dO7N/exec';
 
   const params = new URLSearchParams({
     timestamp: new Date().toISOString(),
