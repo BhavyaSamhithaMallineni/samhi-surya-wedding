@@ -445,7 +445,7 @@ footer em { color:var(--gold-lt); font-style:italic; }
         <div class="event-telugu">పెళ్ళికొడుకు · పెళ్ళికూతురు</div>
         <div class="event-detail"><span class="event-dot">◈</span><span><strong>June 18</strong> &nbsp; 11:00 am – 2:00 pm</span></div>
         <div class="event-detail"><span class="event-dot">◈</span><span><a href="https://maps.google.com/?q=10027+Cole+Rd+Pilot+Point+TX" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">10027 Cole Rd, Pilot Point TX</a></span></div>
-        <div class="event-dress"><span class="event-dress-lbl">Dress Code</span>Traditional </div>
+        <div class="event-dress"><span class="event-dress-lbl">Dress Code</span>Traditional — think silk sarees, dhotis &amp; sherwanis in warm earthy tones</div>
         <a href="#rsvp" class="rsvp-link">RSVP</a>
       </div>
       <div class="event-card reveal">
@@ -453,7 +453,7 @@ footer em { color:var(--gold-lt); font-style:italic; }
         <div class="event-telugu">మెహందీ</div>
         <div class="event-detail"><span class="event-dot">◈</span><span><strong>June 18</strong> &nbsp; 5:00 pm – 9:00 pm</span></div>
         <div class="event-detail"><span class="event-dot">◈</span><span><a href="https://maps.google.com/?q=10027+Cole+Rd+Pilot+Point+TX" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">10027 Cole Rd, Pilot Point TX</a></span></div>
-        <div class="event-dress"><span class="event-dress-lbl">Dress Code</span>Traditional</div>
+        <div class="event-dress"><span class="event-dress-lbl">Dress Code</span>Traditional — go bold &amp; vibrant! Lehengas, anarkalis, bandhgalas welcome</div>
         <a href="#rsvp" class="rsvp-link">RSVP</a>
       </div>
       <div class="event-card reveal">
@@ -461,7 +461,7 @@ footer em { color:var(--gold-lt); font-style:italic; }
         <div class="event-telugu">పెళ్ళి — The Wedding</div>
         <div class="event-detail"><span class="event-dot">◈</span><span><strong>June 19</strong> &nbsp; 7:00 am – 1:00 pm</span></div>
         <div class="event-detail"><span class="event-dot">◈</span><span><a href="https://maps.google.com/?q=Bella+Cavalli+Events+Pilot+Point+TX" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Bella Cavalli Events</a></span></div>
-        <div class="event-dress"><span class="event-dress-lbl">Dress Code</span>Traditional</div>
+        <div class="event-dress"><span class="event-dress-lbl">Dress Code</span>Traditional — silk sarees, kurthas &amp; sherwanis. Come dressed to celebrate!</div>
         <a href="#rsvp" class="rsvp-link">RSVP</a>
       </div>
     </div>
@@ -636,9 +636,9 @@ async function submitRSVP(e) {
   const data=new FormData(form);
   const events=[...form.querySelectorAll('input[name=events]:checked')].map(c=>c.value).join(', ');
   const payload={firstName:data.get('firstName'),lastName:data.get('lastName'),email:data.get('email'),phone:data.get('phone')||'',attending:data.get('attending'),events,notes:data.get('notes')||'',timestamp:new Date().toISOString()};
-  const SHEET_URL='https://script.google.com/macros/s/AKfycbxQD2VfN5LkFb-EqyLfQYVS_T2L9lC5I83JaqE3HGouZqGiXcuqUyBpvGYVyRe4j8dM/exec';
+  const SHEET_URL='https://script.google.com/macros/s/AKfycbzxa35BAVAmTT9Xs7cOKvnKfE70SIbDcwB2KKeYrJm-S7p7u-_wRdhaNOcbdYFp2FQ/exec';
   try {
-    if(SHEET_URL!=='https://script.google.com/macros/s/AKfycbxQD2VfN5LkFb-EqyLfQYVS_T2L9lC5I83JaqE3HGouZqGiXcuqUyBpvGYVyRe4j8dM/exec') {
+    if(SHEET_URL!=='https://script.google.com/macros/s/AKfycbzxa35BAVAmTT9Xs7cOKvnKfE70SIbDcwB2KKeYrJm-S7p7u-_wRdhaNOcbdYFp2FQ/exec') {
       await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     } else { await new Promise(r=>setTimeout(r,700)); }
     form.style.display='none';
