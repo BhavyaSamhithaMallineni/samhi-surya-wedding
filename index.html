@@ -265,11 +265,14 @@ nav a:hover { color:var(--gold-lt); }
 
 /* ══ GALLERY ══ */
 .gallery-strip {
-  display:flex; gap:0.8rem; overflow-x:auto; padding:0.5rem 5%;
+  display:flex; gap:1rem; overflow-x:auto;
+  padding:1rem 0;
   scrollbar-width:thin; scrollbar-color:var(--bg-dark) transparent;
+  justify-content:center;
+  flex-wrap:nowrap;
 }
 .gallery-strip img {
-  height:300px; width:auto; flex-shrink:0; border-radius:2px; object-fit:cover;
+  height:300px; width:200px; flex-shrink:0; border-radius:2px; object-fit:cover;
   border:2px solid rgba(245,240,232,0.15); cursor:pointer; transition:transform 0.3s;
   box-shadow:0 4px 20px rgba(15,10,5,0.3);
 }
@@ -578,19 +581,27 @@ footer em { color:var(--gold-lt); font-style:italic; }
         <div class="form-group"><label>Phone</label><input type="tel" name="phone" placeholder="+1 (555) 000-0000"></div>
         <div class="form-group">
           <label>Attending *</label>
-          <select name="attending" required>
+          <select name="attending" required onchange="toggleGuests(this)">
             <option value="">Please select...</option>
             <option value="yes">Yes, I will be there!</option>
             <option value="no">Regretfully unable to attend</option>
           </select>
         </div>
+        <div class="form-group" id="guests-field" style="display:none;">
+          <label>Anyone coming with you?</label>
+          <select name="guests">
+            <option value="0">Just me</option>
+            <option value="1">1 guest</option>
+            <option value="2">2 guests</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>Events Attending</label>
           <div class="events-check">
-            <label class="ev-label"><input type="checkbox" name="events" value="Mangalasnam"> Mangalasnam (Jun 18, 7am)</label>
-            <label class="ev-label"><input type="checkbox" name="events" value="Pellikoduku"> Pellikoduku / Pellikuthuru (Jun 18, 11am)</label>
-            <label class="ev-label"><input type="checkbox" name="events" value="Mehendi"> Mehendi (Jun 18, 5pm)</label>
-            <label class="ev-label"><input type="checkbox" name="events" value="Pelli"> Pelli / Wedding (Jun 19, 7am)</label>
+            <label class="ev-label"><input type="checkbox" name="ev_mangalasnam" value="Yes"> Mangalasnam (Jun 18, 7am)</label>
+            <label class="ev-label"><input type="checkbox" name="ev_pellikoduku" value="Yes"> Pellikoduku / Pellikuthuru (Jun 18, 11am)</label>
+            <label class="ev-label"><input type="checkbox" name="ev_mehendi" value="Yes"> Mehendi (Jun 18, 5pm)</label>
+            <label class="ev-label"><input type="checkbox" name="ev_pelli" value="Yes"> Pelli / Wedding (Jun 19, 7am)</label>
           </div>
         </div>
         <div class="form-group"><label>Notes</label><textarea name="notes" rows="3" placeholder="Anything you'd like us to know..."></textarea></div>
@@ -622,6 +633,12 @@ function openLB(src) { document.getElementById('lb-img').src=src; document.getEl
 function closeLB() { document.getElementById('lb').classList.remove('active'); }
 document.getElementById('lb').addEventListener('click', e => { if(e.target===document.getElementById('lb')) closeLB(); });
 
+function toggleGuests(sel) {
+  var gf = document.getElementById('guests-field');
+  gf.style.display = sel.value === 'yes' ? 'block' : 'none';
+  if(sel.value !== 'yes') document.querySelector('select[name=guests]').value = '0';
+}
+
 function switchTab(id,btn) {
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -637,19 +654,21 @@ async function submitRSVP(e) {
   btn.disabled = true;
 
   const data = new FormData(form);
-  const events = [...form.querySelectorAll('input[name=events]:checked')].map(c => c.value).join(', ');
-
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwbdsuDBFuf5BZ2cuRUzQ4lqiaDAHWG69ILtndJUoh8RELccMA03XncPHODaze5dO7N/exec';
 
   const params = new URLSearchParams({
-    timestamp: new Date().toISOString(),
-    firstName: data.get('firstName') || '',
-    lastName:  data.get('lastName') || '',
-    email:     data.get('email') || '',
-    phone:     data.get('phone') || '',
-    attending: data.get('attending') || '',
-    events:    events,
-    notes:     data.get('notes') || ''
+    timestamp:       new Date().toISOString(),
+    firstName:       data.get('firstName') || '',
+    lastName:        data.get('lastName') || '',
+    email:           data.get('email') || '',
+    phone:           data.get('phone') || '',
+    attending:       data.get('attending') || '',
+    ev_mangalasnam:  form.querySelector('input[name=ev_mangalasnam]').checked ? 'Yes' : 'No',
+    ev_pellikoduku:  form.querySelector('input[name=ev_pellikoduku]').checked ? 'Yes' : 'No',
+    ev_mehendi:      form.querySelector('input[name=ev_mehendi]').checked ? 'Yes' : 'No',
+    ev_pelli:        form.querySelector('input[name=ev_pelli]').checked ? 'Yes' : 'No',
+    guests:          data.get('guests') || '0',
+    notes:           data.get('notes') || ''
   });
 
   try {
